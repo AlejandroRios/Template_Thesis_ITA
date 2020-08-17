@@ -1,0 +1,8 @@
+%%% by
+%%%   Fábio Fagundes Silveira   -  ffs [at] ita [dot] br
+%%%   $Id: fem.def 2 2006-01-18 11:55:58Z ffs $
+%%%
+\renewcommand{\itaoptionlevel}{dsc}
+\renewcommand{\itaoptioncourse}{\itaoptioncoursedscbabel}       %Doutorado
+\renewcommand{\itaworklevel}{\itaworkleveldscbabel}                %Tese
+\renewcommand{\itaauthortitle}{\itaauthortitledscfembabel}      %Doutora

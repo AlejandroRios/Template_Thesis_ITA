@@ -1,0 +1,8 @@
+%%% by
+%%%   Fábio Fagundes Silveira   -  ffs [at] ita [dot] br
+%%%   $Id: quali.def 2 2006-01-18 11:55:58Z ffs $
+%%%
+\renewcommand{\itaoptionlevel}{quali}
+\renewcommand{\itaworklevel}{\itaworklevelqualibabel}        %{Exame de Qualificação}
+\newcommand{\itaqualifictext}{\itaqualifictextbabel}         %Texto da Qualificacao
+\renewcommand{\itaauthortitle}{\itaauthortitlequalibabel}    %Doutora

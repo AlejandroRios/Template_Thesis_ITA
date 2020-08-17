@@ -1,0 +1,107 @@
+[General]
+archive=tar zcvf '%S.tar.gz' %F
+extIsRegExp=false
+extensions=.eps .pdf .dvi .ps .fig .log .aux .gif .jpg .png .fig
+img_extIsRegExp=false
+img_extensions=.eps .pdf .dvi .ps .fig .gif .jpg .jpeg .png
+kileprversion=1
+kileversion=1.9.1
+lastDocument=
+masterDocument=
+name=classeITA
+pkg_extIsRegExp=false
+pkg_extensions=.cls .sty .dtx
+src_extIsRegExp=false
+src_extensions=.tex .ltx .bib .mp
+
+[Tools]
+MakeIndex=
+QuickBuild=
+
+[item:classeITA.kilepr]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=None
+line=0
+open=false
+
+[item:defaults.def]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=Modula-2
+line=0
+open=false
+
+[item:dsc.def]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=Modula-2
+line=0
+open=false
+
+[item:fem.def]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=Modula-2
+line=0
+open=false
+
+[item:ita.cls]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=LaTeX
+line=48
+open=false
+
+[item:itabr.babel]
+archive=true
+column=46
+encoding=ISO 8859-1
+highlight=None
+line=61
+open=false
+
+[item:itaeng.babel]
+archive=true
+column=31
+encoding=ISO 8859-1
+highlight=None
+line=55
+open=false
+
+[item:makeglo.ist]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=None
+line=0
+open=false
+
+[item:makeglo.sty]
+archive=true
+column=2
+encoding=ISO 8859-1
+highlight=LaTeX
+line=82
+open=false
+
+[item:msc.def]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=Modula-2
+line=0
+open=false
+
+[item:quali.def]
+archive=true
+column=0
+encoding=ISO 8859-1
+highlight=Modula-2
+line=0
+open=false

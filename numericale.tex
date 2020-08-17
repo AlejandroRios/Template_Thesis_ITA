@@ -1,0 +1,403 @@
+\chapter{Verification and numerical errors}
+
+To take advantage of the CFD capabilities in the design, analysis, optimization, and certification of engineering systems requires to quantify properly the accuracy of numerical results \cite{Roy2003b}. Numerical accuracy is assessed using a rigorous framework that involves two important stages: \textit{verification} and \textit{validation}. Both are contributing elements in the development of a computational predictive capability. A reliable \textit{validation} is only possible if a proper \textit{verification} was performed previously. Verification includes quantification of the discretization error. Nowadays the CFD community has adopted the method known as \textit{grid convergence index} which is based on the \textit{Richardson extrapolation}. These concepts are the topic of this chapter.
+
+First, important definitions are presented, which have been adapted from the Guide for the Verification and Validation of CFD simulations \cite{Aiaa2002} \cite{Ihme2019}.
+
+\begin{description}
+\item{\textbf{Accreditation}:} Process to certificate that a model or simulation is acceptable for use for a specific purpose.
+\item{\textbf{Calibration}:} Process of adjusting physical modeling parameters in the mathematical model to improve agreement with experimental data.
+\item{\textbf{Error}:} A recognizable deficiency in a model that is not caused by lack of knowledge. Deviation from the true value of a quantity:
+\begin{equation}
+  \text{error}=\abs{\text{obtained value}-\text{true value}}
+\end{equation}
+The obtained value is provided by either, numerical solution or experimental measurement. For most cases, the true value is not known.%, the error can be estimated.  
+\item{\textbf{Prediction}}: Use of a mathematical model and its numerical results to foretell the state of a physical system under conditions for which the model has not been validated.
+\item{\textbf{Uncertainty}}: A potential deficiency of the model that is due to lack of knowledge. Uncertainty is treated using any of the following methods: Sensitivity analysis and uncertainty analysis.
+\item{\textbf{Validation}} Process of assessing the degree to which a model is an accurate representation of the real world from the perspective of the intended uses of the model, based on comparisons between numerical results and experimental data.  In other words:
+\textit{Validation is solving the right equations}. This process quantifies the uncertainty \cite{Versteeg}.
+\item{\textbf{Verification}:} Process of assessing software correctness and numerical accuracy of a computational solution to a given conceptual formulation (governing equations and sub-models) and the specifications (boundary conditions). In other words:
+\textit{Verification is solving the equations right}. This process quantifies the errors \cite{Versteeg}.
+\end{description}
+
+\begin{comment}
+\section{\nohyphens{Framework for the assessment of turbulence models}}
+
+Roy proposes the following guidelines to document and access CFD simulations \cite{Roy2003}:
+
+The description of the case should be include enough information to reproduce the results by other researchers: relevant physics, geometry, boundary conditions.
+
+The sensitivity to the dimensionless distance to the wall $y+$ should be accessed.
+
+The turbulence model should be clearly stated, as well as the treatment of the near-wall regions.
+
+The form of the governing equations should be given.
+The numerical accuracy or discretization error is should be computed before to compare with experimental data. 
+\end{comment}
+ 
+\section{Numerical errors}
+%\subsection{Introduction}
+
+%If encoding and user errors are ignored, only  \textit{numerical errors} are considered \cite{Versteeg}. 
+
+The most important kinds of numerical errors are the following \cite{Roy2007} :
+\begin{itemize}
+\item Iterative convergence error. Efficient algorithms to solve the numerical matrices use iterative methods.  If the iteration sequence is convergent, the difference between the exact solution of the discretized equations and the current solution is reduced in each iteration \cite{Versteeg}, until reach a value sufficiently low. One common criterion  to stop the iterative process is the residual. The discretized solution of any variable $\phi$ in the center of a cell is written as a linear algebraic equation:   
+
+\begin{equation}
+a_p\phi_p=\sum_{nb} a_{nb}\phi_{nb} +b
+\label{eq:res1}
+\end{equation}
+
+The subscript $p$ denotes the values of a specific cell, and $ab$ denotes values in the neighborhood cells of the cell $p$.
+
+(\ref{eq:res1}) expresses the exact solution to the discretized model. In the iterative process, this equation is not satisfied exactly. Therefore, is necessary to introduce a measure of the difference between both sides, its the local residual $R$ 
+
+\begin{equation}
+R=\sum_{nb} a_{nb}\phi_{nb} +b-a_p\phi_p
+\label{eq:res2}
+\end{equation}
+
+From Eq. (\ref{eq:res2}), a global measure of the iteration error can be derived: 
+
+\begin{equation}
+R^{\phi}=\frac{\sum_{\text{dom}} \abs{\sum_{nb} a_{nb}\phi_{nb} +b-a_p\phi_p}}{\sum_{\text{dom}}a_p \phi_p}
+\end{equation}
+
+$R^\phi$ is termed as scaled (or normalized) global residual. Calculation of the scaled global residual and quantification of the discretization error is will be presented on the last section of this chapter, through the numerical solution in the \textit{Laplace equation}
+
+In order to reduce the impact of this kind of error, the maximum residual should be maintained to very low values (1 x $10^{-5}$)
+ 
+\item Round-off error. The error due to the retaining of a limited number of computer digits available for storage. Furthermore, and it depends on the number of calculations, rounding-off method, sequence of calculations and others \cite{Tu}. Use 
+\textit{Double precision}, i.e. 15 significant digits, contributes to maintain the  round-off error at insignificant values. If the mesh size is too much small,  round-off can increase until to reach the discretization error, like is shown in the Fig. \ref{perfomo2}, in this point, stability solution is affected.     
+
+\begin{figure}[htb!]
+ \centering
+             {\includegraphics[ angle=0, scale=0.9]
+             %{./proposal/graphics/unc_plots/error.pdf}}%Original figure
+             {./proposal/graphics/makedlr/error.pdf}}
+  \caption{Discretization, roundoff and total error as a function of the mesh size. Adapted from \cite{Tu}}
+  \label{perfomo2}
+\end{figure}
+
+\item \textbf{Discretization error}, aso known as \textit{grid convergence error} or \textit{truncation error}. Formally, \textit{discretization error} is defined as the difference between the exact solution of the partial differential equations and the solution of the corresponding system of discretized equations. It is the most significant and will be discussed deeply in this chapter.
+%Although this error decreases with the mesh sizing, the quantity of discrete elements is limited by the available computational capacity \cite{Roy2007}.
+
+\end{itemize}
+
+Other errors that could affect the solution of a CFD simulation are computer coding and user errors. 
+
+\section{Richardson extrapolation}
+
+\textit{Richardson extrapolation} is a powerful technique that improves the accuracy of any variable $\phi$ that is computed using grids with different refinement levels. This extrapolation is the base of many methods to value the \textit{discretization error} in CFD simulations as well as efficient algorithms for numerical integration as the \textit{Romberg integration} \cite{Chapra2015}. This section shows the formal definition which is based on the Taylor expansion of the fist derivative using a second order scheme. In the next section, the Laplace equation is used to show how the accuracy of the discretized model increases using the \textit{Richardson extrapolation}.
+
+Although the original formulation is obtained from the first derivative formula via Taylor series \cite{Cheney}, for the propose of this work, a general value $\phi$ is used instead.   
+
+%Richardson extrapolation , $h_0=0.25$ \cite{Cheney}:
+
+A second order scheme is expressed as
+
+\begin{equation}
+    \phi=\phi_{n,0}+\mathcal{O}(h_n^2)
+\end{equation}
+
+Where the exact value $\phi$ is the sum of an estimator $\phi_{n,0}$ and the error proportional to the square of the mesh spacing $h_n$, i.e. second order scheme. If, $\phi$ is computed using three meshes following the sequence $h_n=\frac{h_{n-1}}{2}$, three direct estimators are obtained, $\phi_{0,0}$, $\phi_{1,0}$, and $\phi_{2,0}$. The last two values on the most refined meshes are used to find a most accurate estimator, with a error of order 4. $\phi_{2,1}$. The exact value now can be rewrote as:    
+
+\begin{equation}
+    \phi=\underbrace{\frac{4}{3}\phi_{2,0}(h_2)-\frac{1}{3}\phi_{1,0}(h_1)}_{\phi_{2,1}}+\mathcal{O}(h_2^4)
+    \label{rich2}
+\end{equation}
+
+Taken into account all three direct estimators the error order increase with a more accurate estimator, $\phi_{2,2}$  
+
+\begin{equation}
+    \phi=\underbrace{\frac{1}{45} \left[64\phi_{2,0}(h_2)-20\phi_{1,0}(h_1)+\phi_{0,0}(h_0)\right]}_{\phi_{2,2}}+\mathcal{O}(h_2^6)
+    \label{rich3}
+\end{equation}
+
+Eqs. \ref{rich2} and \ref{rich3} are generalize through:
+
+\begin{equation}
+    \phi_{n,m}=\frac{4^m}{4^m-1}\phi_{n,m-1}-\frac{1}{4^m-1}\phi_{n-1,m-1};  (1\leq m\leq n)
+    \label{rich4}
+\end{equation}
+
+Where $n$ denotes a specific mesh with a given $h_n$, and $m$ corresponds to the interpolation level  
+
+The quantities $\phi_{n,m}$ obey the \textit{Richardson extrapolation theorem}:
+
+\begin{equation}
+    \phi=\phi_{n,m}+\mathcal{O}(h_n^{2(m+1)});  (0\leq m\leq n)
+\end{equation}
+
+
+
+\section{The Grid Convergence Index, GCI}
+
+
+A priori, the order of accuracy is determined by the lowest order term in the Taylor-series expansion that is used to discretized a differential equation. However, when final results over different meshes are examined a \textit{observed order of accuracy}, $p$ is determined. This order is not necessarily the same order found with Taylor expansion \cite{Roy2003b}.    
+
+\begin{equation}
+    E_{\phi}(h)=\phi_{exact}-\phi \approx Ch^p
+\end{equation}
+
+\begin{figure}[htb!]
+ \centering
+             {\includegraphics[ angle=0, scale=2]
+             {./proposal/graphics/unc_plots/taylor.pdf}}
+  \caption{One-dimensional grid to show the Taylor expansion}
+  \label{perfomo3}
+\end{figure}
+
+
+\begin{equation}
+\left(\frac{\partial \phi}{\partial x} \right)_P=\frac{\phi_E -\phi_P}{\Delta x}+\mathcal{O}(\Delta x)
+\end{equation}
+
+The last one can be estimated using the \textit{grid convergence indicator} (GCI), introduced by Roache \cite{Roache1994}. The application of the GCI requires that the numerical solution presents the following characteristics:
+
+\begin{itemize}
+\item All fluid variables into the domain are continuous and derivable. Therefore,  \textit{Taylor series expansion} offers a good representation.
+\item The leading term of the Taylor series expansion dominates the truncation error behavior.%!!!!!This item was rewrite exactly as appears in the original source(Versteeg, pag. 294). We need to do praraphrasing in this case 
+\item The numerical convergence, based on meshes with different elements number, is monotonic (i.e. if the value of a target quantity, $\phi$, change an amount \textit{X} upon going from a coarse mesh to a medium mesh its value should again change upon going from the medium mesh to a fine mesh and \textbf{magnitude} of the last change should be smaller than the first magnitude \textit{X})
+\end{itemize}
+
+In order to calculate the \textit{GCI} of the performed simulations, this work adopts the procedure suggested by the \textit{Journal of Fluids Engineering}, which uses the numerical results obtained from three different meshes \cite{Celik}.
+
+The first step is to evaluate the representative grid size coarsest mesh, $h_0=\sqrt{Area/\text{elements number}}$, successive meshes must obey the relation
+
+\begin{equation}
+\frac{h_i}{h_{i+1}}\ge 1.3
+\end{equation}
+
+1.3 is a value based on experience and not on formal derivation 
+
+After, the next equation should be solved for $p$:
+
+\begin{equation}
+p=\frac{1}{\ln(r_{21})} \abs{\ln \abs{ \frac{\varepsilon_{10}}{\varepsilon_{21}}}+ \ln \left(\frac{r_{21}^p -\text{sgn}(\varepsilon_{10}/\varepsilon_{21})}{r_{10}^p -\text{sgn}(\varepsilon_{10}/\varepsilon_{21})}\right)}
+\end{equation}
+
+Where the parameters $\varepsilon$ and $r$ correponds to:
+\begin{equation}
+ \varepsilon_{(i+1),i}=\phi_{i+1}-\phi_i   
+\end{equation}
+
+and 
+
+\begin{equation}
+  r_{(i+1),i}=\frac{h_i}{h_{i+1}}
+\end{equation}
+
+
+
+%extrapolated values: This equation is presented by Celick but is not used in the calculation,
+%\begin{equation}
+%\phi_{ext}^{21}=\frac{r_{21}^p \phi_1-\phi_2}{r_{21}^p-1}
+%\end{equation}
+
+Then, the approximate relative error is calculated from the next expression:
+\begin{equation}
+e_a^{21}=\abs{\frac{\phi_1-\phi_2}{\phi_2}}
+\end{equation}
+
+
+Finally, fine-grid convergence index is estimated from:
+
+\begin{equation}
+\text{GCI}_{fine}^{21}=\frac{1.25e_a^{21}}{r_{21}^p-1}
+\end{equation}
+
+%An algorithm was written in Python language to apply this procedure and obtain the \textit{discretization error} of temperature and mixture fraction in 30 different points located over the axis and the circular wall. These results are shown in the Figs. \ref{derror1}, \ref{derror2} and \ref{derror3}. 
+
+Application of GCI in other  numerical simulations can be founded in previous works  \cite{Ali2009}. Several works have used the GCI method to evaluate the combustion process in laminar non-premixed flames \cite{Kang2016,Claramunt2004}. In this context, the present work extends to the turbulent case, which is more complex
+
+\section{Discrete solution of the Laplace equation}
+The \textit{Laplace equation} is an elliptic partial differential equation that is used to model representative engineering problems such as heat conduction, electrostatic fields and in-viscid flows \cite{Chapra2015}. It is stated as:
+
+\begin{equation}
+    \frac{\partial^2 \theta}{\partial x^2} + \frac{\partial^2 \theta}{\partial y^2}=0
+    \label{laplace}
+\end{equation}
+
+The analytical solution of Eq. (\ref{laplace}) over a rectangular domain is  obtained, considering the following boundary conditions \cite{Incropera}:
+\begin{align*}
+    \theta(0,y)&=0 \text{:  left boundary}\\
+    \theta(x,0)&=0 \text{:  bottom boundary}\\
+    \theta(1,y)&=0 \text{:  right boundary}\\
+    \theta(x,1)&=1 \text{:  top boundary}
+\end{align*}
+
+Through the method of separation of variables, the analytical solution attained is: 
+
+\begin{equation}
+    \theta(x,y)=\frac{2}{\pi}\sum_{i=1}^\infty \frac{(-1)^{n+1}+1}{n}\frac{\sinh{(n\pi y)}}{\sinh{(n \pi)}}\sin{(n\pi x)}
+    \label{laplace_1}
+\end{equation}
+
+From (\ref{laplace_1}), the firsts two derivatives respect to $x$ are obtained:
+
+\begin{equation}
+    \frac{\partial \theta}{\partial x}=2\sum_{i=1}^\infty \left[(-1)^{n+1}+1\right]\frac{\sinh{(n\pi y)}}{\sinh{(n \pi)}}\cos{(n\pi x)}
+    \label{dteta1}
+\end{equation}
+
+\begin{equation}
+    \frac{\partial^2 \theta}{\partial x^2}=2\sum_{i=1}^\infty \left[(-1)^{n+1}+1\right]\frac{\sinh{(n\pi y)}}{\sinh{(n \pi)}}(n\pi)\sin{(-n\pi x)}
+    \label{dteta2}
+\end{equation}
+
+Exact solution of the second derivative, Eq. (\ref{dteta2}), will be used to avail the numerical error related with the mesh sizing, also known as \textit{discretization error}. 
+
+When the central difference scheme is applied over Eq. \ref{laplace}, a algebraic equation is obtained:     
+
+\begin{equation}
+    \theta_{i,j}=\frac{1}{4}\left(\theta_{i+1,j}+\theta_{i-1,j}+\theta_{i,j+1}+\theta_{i,j-1}\right)
+    \label{dis_laplace}
+\end{equation}
+
+Eq. (\ref{dis_laplace}) expresses the relationship between the value of $\theta$ in any interior node and its most near nodes. This discretized equation applied over all interior nodes provides a linear system whose solution is a vector with the values $\theta_{i,j}$. This system is solved using either the direct \textit{Gauss elimination} or the \textit{Liebmann's method} (or \textit{Gauss-Seidel})  that is iterative and more efficient computationally in large matrices \cite{Chapra2015}. For this reason, the latter is applied to obtain the numerical solution over three meshes with different refinement levels, the element size related with each mesh are: $h_0$, $h_1$, $h_2$.  
+
+The iterations are repeated until the normal global residual, $R^\phi$, defined in Eq. (\ref{gresidual}), falls below 1x$10^{-6}$. The iterative convergence for all three cases are shown in Fig. \ref{laplace0}.
+
+\begin{equation}
+    \label{gresidual}
+    R^\phi=\frac{\sum \abs{ 4\theta_{i,j}-\theta_{i+1,j}-\theta_{i-1,j}-\theta_{i,j+1}-\theta_{i,j-1}}}{\sum \abs{4\theta_{i,j}}}
+\end{equation}
+
+
+\begin{figure}[htb!]
+ \centering
+             {\includegraphics[ angle=0, scale=1]
+             {./laplace_fig/figure0.pdf}}
+  \caption{Iterative convergence}
+  \label{laplace0}
+\end{figure}
+
+The field of $\theta(x,y)$ and the first partial $x$-derivatives obtained from the analytic solution is presented in Fig. \ref{laplace_an}. The effect of the mesh sizing, $h$, on the solution will be discussed after, taken as reference the numerical value obtained of the second derivative, $d^2\theta/dx^2$ in the central node, $x=y=0.5$. Before, the discrete equations that allow to calculate the first and second derivatives are presented:  
+
+\begin{equation}
+    \frac{\partial \theta}{\partial x}=\frac{\theta_{i+1}-\theta_{i-1}}{2h}
+    \label{dlaplace}
+\end{equation}
+
+\begin{equation}
+    \frac{\partial^2 \theta}{\partial x^2}=\frac{\theta_{i+1,j}-2\theta_{i,j}+\theta_{i-1,j}}{h^2}
+    \label{ddlaplace}
+\end{equation}
+
+\begin{comment}
+ 
+
+ \begin{figure}[t!]
+ \centering
+ \subfigure[$h_0$=0.25]
+             {\label{lap7}
+             \includegraphics[ angle=0, scale=0.85]
+             {./laplace_fig/figure7bn.pdf}}
+ %\vfill
+ \subfigure[$h_1$=0.125]
+             {\label{lap8}
+             \includegraphics[ angle=0, scale=0.85]
+             {./laplace_fig/figure8bn.pdf}}
+ %\vfill
+ \subfigure[$h_2$=0.0625]
+             {\label{lap9}
+             \includegraphics[ angle=0, scale=0.85]
+             {./laplace_fig/figure9bn.pdf}}
+  \caption{Contours of $\theta$ obtained by discretization of the Laplace equation, using  the \textit{Liebmann's method}, Eq. \ref{dis_laplace}, in meshes with different element sizes, $h$.}
+\label{laplace789} 
+\end{figure}
+\end{comment}
+
+ \begin{figure}[t!]
+ %graphis generated with Jupyter
+ %file: \OneDrive\1jupyter_works\laplace_solution
+ \centering
+ \subfigure[$\theta(x,y)$, Eq. \ref{laplace_1}]
+             {\label{lap7_an}
+             \includegraphics[ angle=0, scale=0.85]
+             {./laplace_fig/Laplace.pdf}}
+ %\vfill
+ \subfigure[$ \partial \theta/\partial x$, Eq. \ref{dteta1}]
+             {\label{lap8_an}
+             \includegraphics[ angle=0, scale=0.85]
+             {./laplace_fig/der1Laplace.pdf}}
+ %\vfill
+ \subfigure[$ \partial^2 \theta/\partial x^2$, Eq. \ref{dteta2}]
+             {\label{lap9}
+             \includegraphics[ angle=0, scale=0.85]
+             {./laplace_fig/der2Laplace.pdf}}
+  \caption{Contours of the analytic solution of Laplace equation.}
+\label{laplace_an} 
+\end{figure}
+
+
+Fig. \ref{laplace123} shows the nodal values of $\theta$, and its derivatives  Eq. \ref{dlaplace} and \ref{ddlaplace}, in the line located in $y=0.5$. Also, the analytic solution, Eqs. \ref{laplace_1} to \ref{dteta2}, has been included in this figure. 
+
+ \begin{figure}[t!]
+ \centering
+ \subfigure[primary variable, $\theta(x,0.5)$.]
+             {\label{lap1}
+             \includegraphics[ angle=0, scale=0.75]
+             {./laplace_fig/figure1.pdf}}
+ \subfigure[first derivative, $ \partial \theta/\partial x$.]
+             {\label{lap2}
+             \includegraphics[ angle=0, scale=0.75]
+             {./laplace_fig/figure2.pdf}}
+ \subfigure[second derivative, $ \partial^2 \theta/\partial x^2$.]
+             {\label{lap2}
+             \includegraphics[ angle=0, scale=0.75]
+             {./laplace_fig/figure3.pdf}}
+  \caption{Primary variables and its first two derivatives in $y=0.5$}
+\label{laplace123} 
+\end{figure}
+
+
+
+
+
+\begin{figure}[hb!]
+ \centering
+             {\includegraphics[ angle=0, scale=1]
+             {./laplace_fig/figure4.pdf}}
+  \caption{Discretization error of the second derivative in the central node, $x=y=0.5$. Observable error: $p=1.2152$}
+  \label{laplace4}
+\end{figure}
+
+The computational cost of the numerical solution over a single mesh with a elements of size, $h$, can be estimated with:
+\begin{equation}
+    \text{Computational cost}=\text{iterations number} \times \text{nodes number}
+\end{equation}
+
+This indicator corresponds to the total times number that the algebraic operation indicated in Eq. (\ref{dis_laplace}) is executed until the residual attains the convergence required ($R^\phi$=$10^{-6}$).
+
+\begin{figure}[h!]
+ \centering
+             {\includegraphics[ angle=0, scale=1]
+             {./laplace_fig/ecost_laplace.pdf}}
+  \caption{Absolute error and computational cost for different refinement levels and Richardson extrapolation}
+  \label{ecost}
+\end{figure}
+
+\begin{table}[htb!]
+    \centering
+    \begin{tabular}{c c c c c c}
+        \hline
+        Estimator &  Equation  &Precision&$\phi$&Error& Comp. cost\\
+        \hline
+        $h_0$=0.25 & $\phi_{0,0}$ &$\mathcal{O}(h_0^2)$&-2.000& 8.61\%&171 \\
+        $h_1$=0.125& $\phi_{1,0}$&$\mathcal{O}(h_1^2)$&-2.118& 3.23\%&3430\\
+        $h_2$=0.0625 & $\phi_{2,0}$&$\mathcal{O}(h_2^2)$&-2.168& 0.92\%&55125 \\
+        ext: $h_2$, $h_1$ &  $\phi_{2,1}$-Eq. (\ref{rich2}) &$\mathcal{O}(h_2^4)$& -2.185& 0.14\%&58555 \\
+        ext: $h_2$, $h_1$, $h_0$ & $\phi_{2,2}$-Eq. (\ref{rich3}) &$\mathcal{O}(h_2^6)$& -2.187& 0.06\%& 58726\\
+        Analytical solution &  Eq. (\ref{dteta2}) &- &-2.188&-&-\\
+        \hline
+    \end{tabular}
+    \caption{Accuracy of discretized solution in different meshes and applying the \textit{Richardson extrapolation.}}
+    \label{tab:my_label}
+\end{table}
+
+
+
+

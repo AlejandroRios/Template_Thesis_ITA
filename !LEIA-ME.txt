@@ -1,0 +1,25 @@
+O arquivo do projeto da tese é o tese.tcp
+
+Ao serem compilados, os arquivos geram o arquivo final em .pdf (tese.pdf)
+
+Para montar a sua tese, você deve atualizar:
+
+1. O arquivo tese.tex
+Este é o arquivo principal que vai chamar os capítulos
+Ele também tem informações, como o seu nome, curso ...
+No primeiro comando deste arquivo se define se a tese é em inglês ou português
+
+2. Os capítulos cap1.tex, cap2.tex, ... dentro das pastas Cap1, Cap2 ...
+Dentro de cada pasta de capítulo, são colocadas as figuras deste capítulo (.jpg, .pdf, .bmp ...)
+
+3. Os textos .tex da pasta Cap0 (textos que vem antes do Sumário)
+agradecimentos, resumo, abstract, listaabreviaturas, listasimbolos
+
+4. As referências na pasta Referencias
+referencias.bib
+
+5. Caso tenha, atualizar os anexos e apêndices nas pastas ApeA, AneA...
+
+
+
+
