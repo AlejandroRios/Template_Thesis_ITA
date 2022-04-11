@@ -1,0 +1,8 @@
+%%% by
+%%%   Tarcisio Augusto de Bonfim Gripp
+%%%   $Id: tg.def 2015-01-08 $
+%%%
+\renewcommand{\itaoptionlevel}{tg}
+\renewcommand{\itaoptioncourse}{\itaoptioncoursetgbabel}    %Graduação
+\renewcommand{\itaworklevel}{\itaworkleveltgbabel}             %Trabalho
+\renewcommand{\itaauthortitle}{\itaauthortitletgbabel}      %Engenheiro
