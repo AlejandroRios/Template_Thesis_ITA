@@ -597,8 +597,11 @@
 		    \noindent\@authorlast, \@authorfirst\par
                     \@title\ / \@authorfirst\ \@authorlast.\\
                     \noindent São José dos Campos, \@publyear.\par
-                    \NumPenultimaPagina f.\par
-		    \vspace{\baselineskip}
+                    \if@eng
+                      \NumPenultimaPagina p.\par
+                    \else
+                      \NumPenultimaPagina f.\par
+                    \fi		    \vspace{\baselineskip}
 		    \ifthenelse{\equal{\itaoptionlevel}{tg}}
 							{\itaciptgdata1babel}
 							{\itacipdata1babel}
@@ -619,7 +622,13 @@
           \textbf{\itarefbibnamecipbabel} \par
 			\begin{onehalfspacing}
           {\setlength{\baselineskip}{0.7\baselineskip}
-          \MakeUppercase{\@authorlast}, \@authorfirst. \textbf{\@title}. \@publyear.                     \NumPenultimaPagina f. \ifthenelse{\equal{\itaoptionlevel}{tg}}{\itaciptg2babel}{\itacip2babel} \\}
+          \MakeUppercase{\@authorlast}, \@authorfirst. \textbf{\@title}. \@publyear.                     
+          \if@eng
+            \NumPenultimaPagina p.\par
+          \else
+            \NumPenultimaPagina f.\par
+          \fi
+           \ifthenelse{\equal{\itaoptionlevel}{tg}}{\itaciptg2babel}{\itacip2babel} \\}
        \end{onehalfspacing}
 }
 % Cessao de Direitos
