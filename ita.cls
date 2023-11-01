@@ -173,7 +173,7 @@
 %\RequirePackage[debug,a4paper,pagebackref=true,breaklinks,bookmarksopen=true,colorlinks=true,linkcolor=bblue,citecolor=bblue,urlcolor=bblue,bookmarksnumbered=true,hyperindex=true,verbose=true]{hyperref} %% essencial %% gera pdf/dvi com links
 
 %% LINKS ALTERADOS PARA COR PRETA
-\RequirePackage[debug,a4paper,pagebackref=true,breaklinks,bookmarksopen=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,bookmarksnumbered=true,hyperindex=true,verbose=true]{hyperref}
+\RequirePackage[debug,a4paper,breaklinks,bookmarksopen=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,bookmarksnumbered=true,hyperindex=true,verbose=true]{hyperref}
 %==============================================================================
 
 \ifpdf
@@ -194,8 +194,40 @@
 
 %==============================================================================
 %%% ABNTeX ...
-\RequirePackage[alf,abnt-emphasize=bf,abnt-etal-cite=2,abnt-etal-list=0,abnt-etal-text=it]{abntcite}
+% \RequirePackage[alf,abnt-emphasize=bf,abnt-etal-cite=2,abnt-etal-list=0,abnt-etal-text=it]{abntcite}
 %\RequirePackage{natbib}
+
+
+%% Biblatex update NBR 10520 from 2023
+\RequirePackage[
+    style=abnt,
+    repeatfields, % removes dashed in repeated ref
+    extrayear, % 2012a  in bibliography as well
+    bibstyle=abnt,
+    citestyle=abnt,
+    maxcitenames=4,
+    maxbibnames=99,
+    giveninits=true,%abbreviate first name
+    sortcites=true,
+    doi=true,
+    % natbib=true,
+    % citetracker=true,
+    % uniquename=mininit,
+    % uniquelist=minyear,
+    ]{biblatex}
+
+% make citation "Nunes" instead of "NUNES"
+\renewcommand*{\mkbibnamefamily}[1]{%
+    \ifdefstring{\blx@delimcontext}{parencite}%
+    {\MakeCapital{#1}}%
+    {#1}%
+}
+% et al. in italics
+\DefineBibliographyExtras{english}{%
+    \DeclareBibstringSet{latin}{andothers,ibidem}%
+    \DeclareBibstringSetFormat{latin}{\mkbibemph{#1}}%
+}%
+
 
 %==============================================================================
 % ALTERAR TAMANHO DA FONTE DOS TÍTULOS
@@ -597,8 +629,11 @@
 		    \noindent\@authorlast, \@authorfirst\par
                     \@title\ / \@authorfirst\ \@authorlast.\\
                     \noindent São José dos Campos, \@publyear.\par
-                    \NumPenultimaPagina f.\par
-		    \vspace{\baselineskip}
+                    \if@eng
+                      \NumPenultimaPagina p.\par
+                    \else
+                      \NumPenultimaPagina f.\par
+                    \fi		    \vspace{\baselineskip}
 		    \ifthenelse{\equal{\itaoptionlevel}{tg}}
 							{\itaciptgdata1babel}
 							{\itacipdata1babel}
@@ -619,7 +654,13 @@
           \textbf{\itarefbibnamecipbabel} \par
 			\begin{onehalfspacing}
           {\setlength{\baselineskip}{0.7\baselineskip}
-          \MakeUppercase{\@authorlast}, \@authorfirst. \textbf{\@title}. \@publyear.                     \NumPenultimaPagina f. \ifthenelse{\equal{\itaoptionlevel}{tg}}{\itaciptg2babel}{\itacip2babel} \\}
+          \MakeUppercase{\@authorlast}, \@authorfirst. \textbf{\@title}. \@publyear.                     
+          \if@eng
+            \NumPenultimaPagina p.\par
+          \else
+            \NumPenultimaPagina f.\par
+          \fi
+           \ifthenelse{\equal{\itaoptionlevel}{tg}}{\itaciptg2babel}{\itacip2babel} \\}
        \end{onehalfspacing}
 }
 % Cessao de Direitos
