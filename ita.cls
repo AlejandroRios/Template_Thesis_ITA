@@ -1303,9 +1303,10 @@
 	\multicolumn{ 4}{|c|}{\parbox[t][12cm]{.95\textwidth}{\FDRitaabstractcontent}} \\[\esp]
 	\hline
 	\multicolumn{ 4}{|l|}{$^{12.}$ \scriptsize GRAU DE SIGILO:} \\
-	\multicolumn{ 4}{| l|}{\hspace{2.0cm} (\O) \textbf{OSTENSIVO} \hspace{2.0cm}
-			       (\R) \textbf{RESERVADO} \hspace{2.0cm}
-			       (\S) \textbf{SECRETO} \hspace{2.0cm}} \\[\esp]
+	\multicolumn{ 4}{| l|}{\hspace{0.5cm} (\O) \textbf{OSTENSIVO} \hspace{2.0cm}
+			       (\R) \textbf{RESERVADO} \hspace{1.5cm}
+                      (\C) \textbf{CONFIDENCIAL} \hspace{1.5cm}
+			       (\S) \textbf{SECRETO} \hspace{1.5cm}} \\[\esp]
 	\hline
      \end{tabularx}
 
