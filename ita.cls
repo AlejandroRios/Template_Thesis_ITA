@@ -132,7 +132,7 @@
 \if@eng
    \RequirePackage[english]{babel}
 \else
-   \RequirePackage[english,portuges,brazil]{babel}
+   \RequirePackage[english,brazilian]{babel}
 \fi
 
  \if@eng
@@ -144,6 +144,7 @@
 \RequirePackage[latin1,utf8]{inputenc} % latin -> utf . Modification to use idiomatic ascents directly: âáìõ
 \RequirePackage{setspace}
 \RequirePackage{fancyhdr}
+\RequirePackage{etoolbox}
 \RequirePackage{amsfonts}                 % Fontes p/ conjuntos: R,Z,H,...
 \RequirePackage{lastpage}
 \RequirePackage{indentfirst}
@@ -156,8 +157,17 @@
 
 %==============================================================================
 %%% Glossário
-\usepackage{makeglo}
-\renewcommand{\glossmaxlabelwidth}{\hspace{3cm}}
+\RequirePackage{csquotes}
+% \RequirePackage[acronym, toc, nogroupskip, sanitizesort]{glossaries}
+\RequirePackage[acronym, toc=false, nogroupskip, sanitizesort]{glossaries}
+\RequirePackage{xcolor}
+\glsenablehyper
+\colorlet{currenttext}{.} % get current color with xcolor pkg
+\renewcommand*{\glstextformat}[1]{\textcolor{currenttext}{#1}} % making link color same as text
+% increasing distance between symbol and description
+\glssetwidest{consectetuer}
+\setglossarystyle{alttree}
+
 
 %% opcoes de cores
 %% linkcolor=blue,citecolor=gray,urlcolor=cyan
@@ -173,7 +183,19 @@
 %\RequirePackage[debug,a4paper,pagebackref=true,breaklinks,bookmarksopen=true,colorlinks=true,linkcolor=bblue,citecolor=bblue,urlcolor=bblue,bookmarksnumbered=true,hyperindex=true,verbose=true]{hyperref} %% essencial %% gera pdf/dvi com links
 
 %% LINKS ALTERADOS PARA COR PRETA
-\RequirePackage[debug,a4paper,pagebackref=true,breaklinks,bookmarksopen=true,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,bookmarksnumbered=true,hyperindex=true,verbose=true]{hyperref}
+\RequirePackage[
+  debug,
+  a4paper,
+  pagebackref=false,
+  breaklinks,
+  bookmarksopen=true,
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black,
+  bookmarksnumbered=true,
+  hyperindex=true,
+  verbose=true]{hyperref}
 %==============================================================================
 
 \ifpdf
@@ -194,8 +216,86 @@
 
 %==============================================================================
 %%% ABNTeX ...
-\RequirePackage[alf,abnt-emphasize=bf,abnt-etal-cite=2,abnt-etal-list=0,abnt-etal-text=it]{abntcite}
+% \RequirePackage[alf,abnt-emphasize=bf,abnt-etal-cite=2,abnt-etal-list=0,abnt-etal-text=it]{abntcite}
 %\RequirePackage{natbib}
+% \RequirePackage[alf, abnt-emphasize=bf, abnt-etal-text=it]{abntex2cite}
+
+%%% biblatex ...
+\RequirePackage[
+    style=biblatex-abnt/abnt,
+    repeatfields, % removes dashed in repeated ref
+    extrayear, % 2012a  in bibliography as well
+    maxcitenames=3, % 4 or more, use et al.
+    maxbibnames=99,
+    giveninits=true,%abbreviate first name
+    sortcites=true,
+    doi=true,
+    uniquename=mininit, % to distinguish same author
+    uniquelist=minyear, % to distinguish same author and same year
+    backref=false,		% show page number of each citation
+    giveninits=true,
+    % natbib=true,
+    % citetracker=true,
+    ]{biblatex}
+
+\DefineBibliographyStrings{english}{%
+	urlseen     = {accessed on},%
+	urlfrom     = {available at},%
+	editor      = {ed.},%
+	editors     = {ed.},%
+}
+
+%% use these if the biblatex-abnt is not updated 
+%
+% % make citation "Nunes" instead of "NUNES"
+% \renewcommand*{\mkbibnamefamily}[1]{%
+%     \ifdefstring{\blx@delimcontext}{parencite}%
+%     {\MakeCapital{#1}}%
+%     {#1}%
+% }
+%
+% % et al. in italics
+% \DefineBibliographyExtras{english}{%
+%     \DeclareBibstringSet{latin}{andothers,ibidem}%
+%     \DeclareBibstringSetFormat{latin}{\mkbibemph{#1}}%
+% }%
+
+%==============================================================================
+% estilo de numeração para elementos pre-textuais
+%==============================================================================
+
+\fancypagestyle{plaintopright}{
+	\fancyhf{}
+	\fancyhead[R]{\thepage}	
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+
+%==============================================================================
+%%% Redefinicao de frontmatter
+%==============================================================================
+\renewcommand\frontmatter{%
+	\cleardoublepage
+	\@mainmatterfalse
+	\pagenumbering{roman}
+	\pagestyle{plaintopright}
+}
+
+%==============================================================================
+%%% Redefinicao de mainmatter para numeracao continua de paginas
+%==============================================================================
+\renewcommand\mainmatter{%
+  \cleardoublepage
+  \@mainmattertrue
+  \renewcommand{\thepage}{\arabic{page}}
+  % fixing fancy style from frontmatter
+  \fancyhead[R]{\thepage}
+  \fancyhead[L]{\leftmark}
+  \renewcommand{\headrulewidth}{0.5pt}
+  \pagestyle{fancy}
+  }
+
 
 %==============================================================================
 % ALTERAR TAMANHO DA FONTE DOS TÍTULOS
@@ -381,7 +481,7 @@
 			\end{spacing}
 	 \else
 			\begin{spacing}{1.5}
-			S\~{a}o Jos\'{e} dos Campos, \@publmonth\ de \@publyear
+			S\~{a}o Jos\'{e} dos Campos, \@publday de \@publmonth\ de \@publyear
 			\end{spacing}
 	 \fi
 
@@ -456,7 +556,7 @@
 
    \noindent
 
-   \begin{spacing}{1.2}
+   \begin{spacing}{1.5}
    \noindent \parbox[c]{\textwidth}{\itaformattitletext{\itatitletext}}
    \end{spacing}
 
@@ -469,7 +569,7 @@
 
    \vspace*{\stretch{1}}
 
-   \begin{spacing}{1.2}
+   \begin{spacing}{2}
    \itaformatworktitle{\MakeUppercase{\@title}}
    \end{spacing}
 
@@ -500,9 +600,11 @@
 
    \vspace*{\stretch{2}}
 
-   \begin{spacing}{1.5}
-       \@boss
-   \end{spacing}
+	\@ifundefined{@boss}{}{ 
+		\begin{spacing}{1.5}
+			\@boss
+		\end{spacing}
+	}
 
    \vspace*{\stretch{2}}
 
@@ -597,7 +699,11 @@
 		    \noindent\@authorlast, \@authorfirst\par
                     \@title\ / \@authorfirst\ \@authorlast.\\
                     \noindent São José dos Campos, \@publyear.\par
-                    \NumPenultimaPagina f.\par
+                    \if@eng
+                      \NumPenultimaPagina p.\par
+                    \else
+                      \NumPenultimaPagina f.\par
+                    \fi
 		    \vspace{\baselineskip}
 		    \ifthenelse{\equal{\itaoptionlevel}{tg}}
 							{\itaciptgdata1babel}
@@ -619,7 +725,13 @@
           \textbf{\itarefbibnamecipbabel} \par
 			\begin{onehalfspacing}
           {\setlength{\baselineskip}{0.7\baselineskip}
-          \MakeUppercase{\@authorlast}, \@authorfirst. \textbf{\@title}. \@publyear.                     \NumPenultimaPagina f. \ifthenelse{\equal{\itaoptionlevel}{tg}}{\itaciptg2babel}{\itacip2babel} \\}
+          \MakeUppercase{\@authorlast}, \@authorfirst. \textbf{\@title}. \@publyear.
+            \if@eng
+              \NumPenultimaPagina p. 
+            \else
+              \NumPenultimaPagina f. 
+            \fi
+            \ifthenelse{\equal{\itaoptionlevel}{tg}}{\itaciptg2babel}{\itacip2babel} \\}
        \end{onehalfspacing}
 }
 % Cessao de Direitos
@@ -653,15 +765,17 @@
 {
    \newpage
    \pdfbookmark[0]{\namepageexaminersbookmark}{aprovacao}
-   \thispagestyle{empty}
+%    \thispagestyle{plaintopright}
 
    \noindent
 
 	 \ifthenelse{\equal{\itaoptionlevel}{tg}}
 	     {
-			 \begin{spacing}{1.0}
        \begin{center}
-         \itaformatworktitle{\MakeUppercase{\@title}}
+	   	\begin{spacing}{2}
+			\itaformatworktitle{\MakeUppercase{\@title}}
+		\end{spacing}
+		\begin{spacing}{1.0}
          \vfill
          \small{\itathesisapprovedmemberstg}
 				 \vspace*{\stretch{3}}
@@ -707,14 +821,16 @@
 	     {
 	     \begin{spacing}{1.0}
        \begin{center}
-         \itaformatworktitle{\MakeUppercase{\@title}}
+	   \begin{spacing}{1.5}
+			\itaformatworktitle{\MakeUppercase{\@title}}
+		\end{spacing}
          \vfill
          \itaformatauthorname{\@authorfirst\ \@authorlast}
 				 \vfill
 			 \end{center}
 
 			 \raggedright{\normalsize{\namepageexaminers}}
-       \vfill
+		\vspace{12pt}
 
        \raggedright\@memberslist
 
@@ -729,7 +845,8 @@
 %%% Dedicatória...
 %==============================================================================
 \newenvironment{itadedication}
-{\thispagestyle{empty}%
+{
+%   \thispagestyle{plaintopright} 
   \pdfbookmark[0]{\namededicatory}{dedication}
   \begin{flushright}%
   \null\vfil \@beginparpenalty\@lowpenalty
@@ -751,6 +868,7 @@
 
 \newenvironment{itathanks}[1][\nameacknowledgment]
 {
+ \thispagestyle{plaintopright} 
  \chapter*{#1}
  \pdfbookmark[0]{\nameacknowledgment}{acknowledgment}
  }
@@ -759,25 +877,39 @@
 %==============================================================================
 %%% Resumo ...
 %==============================================================================
-\newenvironment{abstract}
-{\chapter*{\nameabstract}
- \pdfbookmark[0]{\nameabstract}{resumo}}{}
+\newenvironment{abstract}{
+	% \thispagestyle{plaintopright} 
+	\chapter*{\nameabstract}
+	\pdfbookmark[0]{\nameabstract}{resumo}}{}
 
 %==============================================================================
 %%% Abstract ...
 %==============================================================================
-\newenvironment{englishabstract}
-{\chapter*{\nameengabstract}
- \pdfbookmark[0]{\nameengabstract}{abstract}}{}
+\newenvironment{englishabstract}{
+	% \thispagestyle{plaintopright}  
+	\chapter*{\nameengabstract}
+	\pdfbookmark[0]{\nameengabstract}{abstract}}{}
 
 %==============================================================================
 %%% Redefinicao de chapter
 %==============================================================================
+% nao mostrar numeracao na pagina do capitulo e depois voltar com estilo utilizado
+% \renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
+%                     \thispagestyle{empty}%
+%                     \global\@topnum\z@
+%                     \@afterindenttrue
+                    % \secdef\@chapter\@schapter}
 \renewcommand\chapter{\if@openright\cleardoublepage\else\clearpage\fi
-                    \thispagestyle{empty}%
+					\if@mainmatter
+						\thispagestyle{empty}
+					\else
+						\pagestyle{plaintopright}
+					\fi
                     \global\@topnum\z@
                     \@afterindenttrue
-                    \secdef\@chapter\@schapter}
+                    \secdef\@chapter\@schapter
+				}
+
 % Redefinicao do espaco entre paragrafos
 \setlength{\parskip}{.5em}
 
@@ -868,41 +1000,40 @@
 
 % Lista de Símbolos...
 \newcommand\listofsymbols{%
-    %\begin{spacing}{1.5}   %ita
-    \if@twocolumn
-      \@restonecoltrue\onecolumn
-    \else
-      \@restonecolfalse
-    \fi
-    \chapter*{\listofsymbolsname
-      \@mkboth{\MakeUppercase{\listofsymbolsname}}%
-              {\MakeUppercase{\listofsymbolsname}}}%         Thanks to Reinaldo Fortes
-%    \addcontentsline{toc}{chapter}{\listofsymbolsname}%      Thanks to ffs  :-)
-		\pdfbookmark[0]{\listofsymbolsname}{listasimbolos}
-    \@starttoc{los}% If this command is enable list of symbols will appears with othe list (list of table or list of figures)
-    \if@restonecol\twocolumn\fi
-    %\end{spacing}   %ita
-    }
+	\printnoidxglossary[
+		title=\listofsymbolsname,
+		sort=use,   % according to abnt 14724 the list of symbols is sorted by order of use in text
+		nonumberlist]
+	\pdfbookmark[0]{\listofsymbolsname}{listasimbolos}
+}
+
+%% keeping old version here in case we miss some feature 
+% \newcommand\listofsymbols{%
+%     %\begin{spacing}{1.5}   %ita
+%     \if@twocolumn
+%       \@restonecoltrue\onecolumn
+%     \else
+%       \@restonecolfalse
+%     \fi
+%     \chapter*{\listofsymbolsname
+%       \@mkboth{\MakeUppercase{\listofsymbolsname}}%
+%               {\MakeUppercase{\listofsymbolsname}}}%         Thanks to Reinaldo Fortes
+% %    \addcontentsline{toc}{chapter}{\listofsymbolsname}%      Thanks to ffs  :-)
+% 		\pdfbookmark[0]{\listofsymbolsname}{listasimbolos}
+%     \@starttoc{los}% If this command is enable list of symbols will appears with othe list (list of table or list of figures)
+%     \if@restonecol\twocolumn\fi
+%     %\end{spacing}   %ita
+%     }
+
 
 % Lista de Abreviaturas...
 \newcommand\listofabbreviations{%
-    %\begin{spacing}{1.5}   %ita
-		\begin{flushleft}
-    \if@twocolumn
-      \@restonecoltrue\onecolumn
-    \else
-      \@restonecolfalse
-    \fi
-    \chapter*{{\listofabbreviationsname}
-      \@mkboth{\MakeUppercase{\listofabbreviationsname}}%       Thanks to Reinaldo Fortes
-              {\MakeUppercase{\listofabbreviationsname}}}%
-     %\addcontentsline{toc}{chapter}{\listofabbreviationsname}%  Thanks to ffs  :-)
-		\pdfbookmark[0]{\listofabbreviationsname}{listaabreviaturas}
-    \@starttoc{lof}%
-    \if@restonecol\twocolumn\fi
-    \end{flushleft}
-		%\end{spacing}   %ita
-    }
+	\printnoidxglossary[type=\acronymtype,
+		title=\listofabbreviationsname,
+		sort=standard,
+		nonumberlist]
+	\pdfbookmark[0]{\listofabbreviationsname}{listaabreviaturas}
+}
 
 
 % Thanks to Dr. Alan Wilter Sousa da Silva - alan@lncc.br
@@ -1091,13 +1222,6 @@
 }
 
 
-%==============================================================================
-%%% Redefinicao de mainmatter para numeracao continua de paginas
-%==============================================================================
-\renewcommand\mainmatter{%
-  \cleardoublepage
-  \@mainmattertrue
-  \renewcommand{\thepage}{\arabic{page}} }
 
 %==============================================================================
 %%% 'Desligar' hifenacao...
@@ -1141,17 +1265,6 @@
 %==============================================================================
 \setcounter{secnumdepth}{4}
 
-%==============================================================================
-%%% Glossario
-%==============================================================================
-\newcommand{\itaglossary}{
-\cleardoublepage
-\thispagestyle{empty}%
-\@mkboth{\MakeUppercase{\itaglossarynamebabel}}%
-        {\MakeUppercase{\itaglossarynamebabel}}%
-\gdef\glossaryname{\itaglossarynamebabel}
-\refstepcounter{chapter}
-}
 
 %==============================================================================
 % %%% Centralizar e ajustar os espacamentos dos captions das figuras e tabelas

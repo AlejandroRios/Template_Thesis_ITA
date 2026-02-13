@@ -1,16 +1,17 @@
 @INPROCEEDINGS{Arystides1994,
   author = {Brayner Arystides and Carlos Santos de Medeiros},
-  title = {Incorporação de Tempo em {SGBD} Orientado a Objeto},
-  booktitle = {},
-  year = {1995},
+  title = {Incorporação de tempo em {SGBD} orientado a objeto},	% Apenas primeira letra maiuscula para titulos
+  eventtitle = {Simpósio Brasileiro de Banco de Dados},
+  booktitle = {Proceedings [\ldots]},							% nome do livro ex: "Proceedings Volume 12345" %
+  																%  ou caso não tenha: Proceedings [\ldots] ou Anais [\ldots]
+  venue = {Salvador},											% cidade onde ocorreu o evento
+  number = {13},												% numero da conferencia (XV -> 15)	
+  eventdate = {1995-12-30},										% yyyy-mm-dd
   pages = {90--98},
-  address = {Petrolina},
-  organization = {Simpósio Brasileiro de Banco de Dados},
+  editor = {João Silva and Alberto Alguém},
   publisher = {EMBRAPA},
-  conference-number = {13},
-  conference-year = {1996},
-  conference-location = {Petrolina},
-  owner = {ffs},
+  address = {Petrolina},										% endereço da editora
+  date = {1997-11-20},											% data de publicação
 }
 
 @INPROCEEDINGS{Assenmacher1993,
@@ -23,9 +24,9 @@
   organization = {European Conference on Object-Oriented Programming},
   publisher = {Springer},
   note = {(Lecture Notes in Computer Science, v. 707)},
-  conference-number = {7},
-  conference-year = {1993},
-  conference-location = {Kaiserslautern},
+  number = {7},
+  eventdate = {1993},
+  venue = {Kaiserslautern},
   subtitle = {supporting Distributed Programming in {L}++},
 }
 
@@ -42,9 +43,9 @@
   organization = {European Conference on Object-Oriented Programming},
   publisher = {IEEE},
   note = {},
-  conference-number = {20},
-  conference-year = {2007},
-  conference-location = {Bangalore},
+  number = {20},
+  eventdate = {2007},
+  venue = {Bangalore},
   subtitle = {},
 }
 
@@ -90,9 +91,9 @@
   publisher = {Java Island Press},
   month = jan,
   organization = {Conference on Coffee Importance},
-  conference-number = {1},
-  conference-year = {2000},
-  conference-location = {Java Island},
+  number = {1},
+  eventdate = {2000},
+  venue = {Java Island},
   key = {COFFEE},
   booktitle = {},
 }
@@ -107,14 +108,14 @@
   note = {(RR~95-02)},
   institution = {I3S, Universit\'{e} de Nice Sophia-Antipolis},
   url = {http://www-sop.inria.br/science/skd.gz},
-  urlaccessdate = {29 fev. 2003},
+  urlaccessdate = {2003-02-29},
 }
 
 @MISC{ITALUS2004,
   title = {ITALUS},
   year = {2004},
   url = {http://www.comp.ita.br/italus/},
-  urlaccessdate = {22 jul. 2004},
+  urlaccessdate = {2004-07-22},
   subtitle = {grupo de usu{\'a}rios {\LaTeX} do {ITA}},
 }
 
@@ -124,7 +125,7 @@
   address = {San Jose, CA},
   publisher = {Cisco},
   url = {https://www.cisco.com/c/en/us/solutions/collateral/executive-perspectives/annual-internet-report/white-paper-c11-741490.html},
-  urlaccessdate = {08/07/2020},
+  urlaccessdate = {2020-07-08},
   subtitle = {Cisco Annual Internet Report (2018 - 2023) White Paper},
 }
 
@@ -157,7 +158,7 @@
   pages = {36},
   pagename = {f.},
   year = {1971},
-  year-presented = {1970},
+  eventdate = {1970},
 }
 
 @MASTERSTHESIS{Sbornian2002,
@@ -168,10 +169,10 @@
   address = {Santa Pindamonhangaba},
   pages = {98},
   url = {http://www.santapinda.edu/\~{}sbor/dissert.pdf},
-  pagename = {f.},
-  urlaccessdate = {25 fev. 2002},
+  pagename = {f.}, % nao funciona com biblatex-abnt
+  urlaccessdate = {2002-02-25},
   year = {2002},
-  year-presented = {2002}
+  eventdate = {2002}
 }
 
 @PHDTHESIS{Sbornian2004,
@@ -184,23 +185,24 @@
   note = {1 CD--ROM},
   pages = {169},
   pagename = {f.},
-  year-presented = {2004},
+  eventdate = {2004},
 }
 @BOOK{Silberschatz1991,
   title = {Operating system concepts},
   publisher = {Springer},
   year = {1991},
   author = {Abraham Silberschatz and James Lyle Peterson and Peter B. Galvin},
+  editor = {Editor da Silva},
   address = {New York},
-  edition = {3rd},
-  xisbn = {2049-67-555},
+  edition = {3},
+  isbn = {2049-67-555},
   
 }
 
 @INBOOK{2008Accettura,
     author = {A. Accettura},
     title = {Advanced LOX-HC Engines for Boosters and Upper Stages},
-    organization = {A. Accettura, C. Bruno (ed.)},
+    editor = {A. Accettura and C. Bruno},
     year = {2008},
     booktitle = {Advanced Propulsion Systems and Technologies, Today to 2020},
     address={Reston},

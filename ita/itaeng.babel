@@ -14,7 +14,7 @@
 %--------------------------------------------------------
 % Mestrado
 %--------------------------------------------------------
-\gdef\itaoptioncoursemscbabel{Master}
+\gdef\itaoptioncoursemscbabel{Master's degree}
 \gdef\itaworklevelmscbabel{Dissertation}
 \gdef\itaauthortitlemscbabel{Master of Science}
 \gdef\itaauthortitlemscfembabel{Master of Science}
@@ -82,8 +82,8 @@
 \gdef\nameengabstract{Abstract}
 \gdef\nametitlepage{Face Page}
 \gdef\namecip{Cataloging-in-Publication}
-\gdef\namepageexaminersbookmark{Thesis Committee Composition:}
-\gdef\namepageexaminers{Thesis Committee Composition:}
+\gdef\namepageexaminersbookmark{Committee Composition}
+\gdef\namepageexaminers{{\ifthenelse{\equal{\itaoptionlevel}{msc}}{Dissertation}{Thesis}} Committee Composition:}
 \gdef\namecontents{Contents}
 \gdef\nameannex{Annex}
 \gdef\itafigurenamebabel{FIGURE}
@@ -144,17 +144,17 @@
                         \@publyear. Advisor: \itaadvisortitle\ \itaadvisorname. 
 			\@ifundefined{@coadvisor}{}{Co-advisor: \@itacoadvisortitle\ \@itacoadvisorname.}\par
 			\vspace{\baselineskip}
-			\@cipkw\ I. Instituto Tecnol\'{o}gico de Aeron\'{a}utica. II.~Title.\par}
+			\@cipkw\ I. Instituto Tecnol\'{o}gico de Aeron\'{a}utica. II.~\@title.\par}
 
 \gdef\itaciptgdata1babel {Final paper (Undergraduation study) -- Course of \itaworkcourse -- Instituto Tecnol\'{o}gico de Aeron\'{a}utica,
 	\@publyear. Advisor: \itaadvisortitle\ \itaadvisorname. \@ifundefined{@coadvisor}{}{Co-advisor:
 	\@itacoadvisortitle\ \@itacoadvisorname.}\par
 	\vspace{\baselineskip}
-	\@cipkw\ I. Instituto Tecnol\'{o}gico de Aeron\'{a}utica. II.~Title.\par}
+	\@cipkw\ I. Instituto Tecnol\'{o}gico de Aeron\'{a}utica. II.~\@title.\par}
 
 \gdef\itarefbibnamecipbabel{BIBLIOGRAPHIC REFERENCE}
 
-\gdef\itacip2babel {\itaworklevel\ of \itaauthortitle\ -- Instituto Tecnol\'{o}gico de Aeron\'{a}utica, S\~{a}o Jos\'{e} dos Campos.}
+\gdef\itacip2babel {\itaworklevel\ (\itaoptioncourse\ in \itaworkcourse) -- Instituto Tecnol\'{o}gico de Aeron\'{a}utica, S\~{a}o Jos\'{e} dos Campos, \@publyear.}
 
 \gdef\itaciptg2babel {Final paper (Undergraduation study) -- Instituto Tecnol\'{o}gico de Aeron\'{a}utica, 
         S\~{a}o Jos\'{e} dos Campos.}

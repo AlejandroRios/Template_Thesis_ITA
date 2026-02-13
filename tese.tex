@@ -18,7 +18,7 @@
 %%%              Overleaf: https://pt.overleaf.com/latex/templates/thesis-template-aeronautics-institute-of-technology-ita/yhfrqqydpygk
 %%%
 %%%   Contribuia você também!
-%%%              GitHub:   https://github.com/AlejandroRios/Template_Thesis_ITA
+%%%              GitHub:   https://github.com/gabriellnuness/Template_Thesis_ITA
 %%%
 %%%  IMPORTANTE: O texto contido neste exemplo nao significa absolutamente nada.  :-)
 %%%              O intuito aqui eh demonstrar os comandos criados na classe e suas
@@ -70,6 +70,9 @@
 
 
 %HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+\addbibresource{Referencias/referencias.bib}
+
+%HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 %\usepackage{subfigure}
 %\usepackage{subfigmat}
 %PACOTEFIGURAS_SE _ERRADO_ESXCLUIR_ACIMA
@@ -91,7 +94,7 @@
 % Para entradas abreviadas de Professora (Profa.) em português escreva: Prof$^\textnormal{a}$.
 %++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 \course{Engenheria da Computação}  % Programa de PG ou Curso de Graduação
-%\area{Aircraft Design} % Área de concentração na PG (Não utilizado no caso de TG)
+\area{Aircraft Design} % Área de concentração na PG (Não utilizado no caso de TG)
 
 % Autor do trabalho: Nome Sobrenome
 \authorgender{fem}                     %sexo: masc ou fem
@@ -109,9 +112,10 @@
 \coadvisorgender{fem}									% masc ou fem
 \coadvisor{Prof$^\textnormal{a}$.~Dr$^\textnormal{a}$.}{Doralice Serra}{OVNI}
 
+% TODO: remove Pro-rector entry or just leave it optional and off by default?
 % Pró-reitor da Pós-graduação
-\bossgender{masc}												% masc ou fem
-\boss{Prof.~Dr.}{John von Neumann}
+% \bossgender{masc}												% masc ou fem
+% \boss{Prof.~Dr.}{John von Neumann}
 
 %Coordenador do curso no caso de TG
 \bosscoursegender{masc}									% masc ou fem
@@ -131,14 +135,18 @@
 \examiner{Prof. Dr.}{Mickey Mouse}{}{DISNEY}
 
 % Data da defesa (mês em maiúsculo, se trabalho em inglês, e minúsculo se trabalho em português)
-\date{23}{novembro}{2022}
+\date{26}{janeiro}{2026}
 
 % Número CDU - (somente para TG)
 \cdu{???.??}
 
 % Glossario
-\makeglossary
+\makenoidxglossaries % to use glossaries pkg
 \frontmatter
+
+
+\input{PreTextuais/listaabreviaturas.tex}
+\input{PreTextuais/listasimbolos.tex}
 
 \begin{document}
 \input{PreTextuais/main}
@@ -160,7 +168,7 @@
 
 % REFERENCIAS BIBLIOGRAFICAS
 \renewcommand\bibname{\itareferencesnamebabel} %renomear título do capítulo referências
-\bibliography{Referencias/referencias}
+\printbibliography
 
 % Apendices
 \appendix
@@ -178,16 +186,16 @@
 
 % Folha de Registro do Documento
 % Valores dos campos do formulario
-\FRDitadata{25 de março de 2015}
-\FRDitadocnro{DCTA/ITA/DM-018/2015} %(o número de registro você solicita a biblioteca)
+\FRDitadata{26 de janeiro de 2026}
+\FRDitadocnro{DCTA/ITA/DM-018/2026} %(o número de registro você solicita a biblioteca)
 \FRDitaorgaointerno{Instituto Tecnológico de Aeronáutica -- ITA}
 %Exemplo no caso de pós-graduação: Instituto Tecnol{\'o}gico de Aeron{\'a}utica -- ITA
 \FRDitapalavrasautor{Cupim; Cimento; Estruturas}
 \FRDitapalavrasresult{Cupim; Dilema; Construção}
 %Exemplo no caso de graduação (TG):
-%\FRDitapalavraapresentacao{Trabalho de Graduação, ITA, São José dos Campos, 2015. \NumPenultimaPagina\ páginas.}
+%\FRDitapalavraapresentacao{Trabalho de Graduação, ITA, São José dos Campos, 2026. \NumPenultimaPagina\ páginas.}
 %Exemplo no caso de pós-graduação (msc, dsc):
-\FRDitapalavraapresentacao{ITA, São José dos Campos. Curso de Mestrado. Programa de Pós-Graduação em Engenharia Aeronáutica e Mecânica. Área de Sistemas Aeroespaciais e Mecatrônica. Orientador: Prof.~Dr. Adalberto Santos Dupont. Coorientadora: Prof$^\textnormal{a}$.~Dr$^\textnormal{a}$. Doralice Serra. Defesa em 05/03/2015. Publicada em 25/03/2015.}
+\FRDitapalavraapresentacao{ITA, São José dos Campos. Curso de Mestrado. Programa de Pós-Graduação em Engenharia Aeronáutica e Mecânica. Área de Sistemas Aeroespaciais e Mecatrônica. Orientador: Prof.~Dr. Adalberto Santos Dupont. Coorientadora: Prof$^\textnormal{a}$.~Dr$^\textnormal{a}$. Doralice Serra. Defesa em 05/03/2026. Publicada em 26/01/2026.}
 \FRDitaresumo{\input{PreTextuais/resumo}}
 %  Primeiro Parametro: Nacional ou Internacional -- N/I
 %  Segundo parametro: Ostensivo, Reservado, Confidencial ou Secreto -- O/R/C/S
